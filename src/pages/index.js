@@ -1,27 +1,10 @@
 import Head from "next/head";
-import { useCallback, useState } from "react";
-import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import { useState } from "react";
 
 export default function Home() {
   const [sent, setSent] = useState(false);
 
-  const { executeRecaptcha } = useGoogleReCaptcha();
-
-  const submitEnquiryForm = (gReCaptchaToken, lomake) => {
-    const response = fetch('/api/form', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(lomake),
-    });
-    const result = response.json();
-    console.log('Salaisuus lähetetty');
-    console.log(result);
-
-  };
-
-  const handleSubmitForm = useCallback(
+  const handleSubmitForm =
     (e) => {
       e.preventDefault();
 
@@ -31,17 +14,18 @@ export default function Home() {
 
       setSent(true);
 
-      if (!executeRecaptcha) {
-        console.log("Execute recaptcha not yet available");
-        return;
-      }
-      executeRecaptcha("enquiryFormSubmit").then((gReCaptchaToken) => {
-        console.log(gReCaptchaToken, "response Google reCaptcha server");
-        submitEnquiryForm(gReCaptchaToken, lomake);
+      console.log(lomake)
+      const response = fetch('/api/form', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(lomake),
       });
+      console.log(response)
+      console.log('Salaisuus lähetetty');
 
-    }, [executeRecaptcha]
-  );
+    };
 
   return (
     <>
@@ -62,7 +46,7 @@ export default function Home() {
           kirjautumisen ja ne vanhentuvat.
         </p>
         {!sent &&
-          <form className="mt-12" onSubmit={handleSubmitForm} >
+          <form className="mt-12" onSubmit={handleSubmitForm} /*action="/api/form" method="POST"*/ >
             <div className="mb-6">
               <label className="block font-bold mb-2" htmlFor="salaisuus">
                 Salaisuuden sisältö

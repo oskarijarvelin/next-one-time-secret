@@ -1,5 +1,34 @@
 import { encode as base64_encode } from "base-64";
 
+function send_email(key, recipient) {
+  fetch(`https://api.sendgrid.com/v3/mail/send`, {
+    "method": "POST",
+    "headers": {
+      "Content-type": "application/json",
+      "Authorization": `Bearer ${process.env.SENDGRID_API_KEY}`,
+    },
+    "body": JSON.stringify({
+      "personalizations": [
+        {
+          "to": [
+            {
+              "email": `${recipient}`,
+            },
+          ],
+        },
+      ],
+      "from": { "email": "salaisuus@oskarijarvelin.fi" },
+      "subject": "Uusi salaisuus vastaanotettu",
+      "content": [
+        {
+          "type": "text/html",
+          "value": `<a href="https://salaisuus.oskarijarvelin.fi/lue/${key}" target="_blank">https://salaisuus.oskarijarvelin.fi/lue/${key}</a>`,
+        },
+      ],
+    }),
+  });
+}
+
 export default function handler(req, res) {
   const body = req.body;
 
@@ -16,7 +45,9 @@ export default function handler(req, res) {
   };
 
   fetch(
-    `https://onetimesecret.com/api/v1/share?secret=${encodeURI(body.salaisuus)}&passphrase=${ots.passphrase}&ttl=${ots.ttl}&recipient=${ots.recipient}`,
+    `https://onetimesecret.com/api/v1/share?secret=${encodeURI(
+      body.salaisuus
+    )}&passphrase=${ots.passphrase}&ttl=${ots.ttl}&recipient=${ots.recipient}`,
     {
       method: "POST",
       headers: {
@@ -28,40 +59,9 @@ export default function handler(req, res) {
   )
     .then((resp) => resp.json())
     .then((resp) => {
-      console.log(resp);
       if (resp?.custid === ots.username) {
-        console.log(resp?.message);
-        res.status(201).json({ salaisuus: `${body.salaisuus}` });
-        fetch(`https://api.sendgrid.com/v3/mail/send`, {
-          method: "POST",
-          headers: {
-            'Content-type': 'application/json',
-            'Authorization': `Bearer ${process.env.SENDGRID_API_KEY}`,
-          },
-          body: JSON.stringify({
-            "personalizations": [
-              {
-                "to": [
-                  {
-                    "email": `${ots.recipient}`,
-                  },
-                ],
-              },
-            ],
-            "from": { "email": "salaisuus@oskarijarvelin.fi" },
-            "subject": "Uusi salaisuus vastaanotettu",
-            "content": [
-              {
-                "type": "text/html",
-                "value": `<a href="https://salaisuus.oskarijarvelin.fi/lue/${resp.secret_key}" target="_blank">https://salaisuus.oskarijarvelin.fi/lue/${resp.secret_key}</a>`,
-              },
-            ],
-          }),
-        })
-          .then((respo) => respo.json())
-          .then((respo) => {
-            console.log(respo);
-          });
+        send_email(resp.secret_key, ots.recipient);
+        res.status(201).json({ success: true });
       } else {
         res
           .status(400)
