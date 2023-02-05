@@ -2,12 +2,12 @@ import { encode as base64_encode } from "base-64";
 
 function send_email(key, recipient) {
   fetch(`https://api.sendgrid.com/v3/mail/send`, {
-    "method": "POST",
-    "headers": {
+    method: "POST",
+    headers: {
       "Content-type": "application/json",
-      "Authorization": `Bearer ${process.env.SENDGRID_API_KEY}`,
+      Authorization: `Bearer ${process.env.SENDGRID_API_KEY}`,
     },
-    "body": JSON.stringify({
+    body: JSON.stringify({
       "personalizations": [
         {
           "to": [
