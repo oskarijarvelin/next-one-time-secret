@@ -14,7 +14,6 @@ export default function Home() {
 
       setSent(true);
 
-      console.log(lomake)
       const response = fetch('/api/form', {
         method: 'POST',
         headers: {
@@ -22,8 +21,6 @@ export default function Home() {
         },
         body: JSON.stringify(lomake),
       });
-      console.log(response)
-      console.log('Salaisuus lähetetty');
 
     };
 
