@@ -51,6 +51,7 @@ export default function Home() {
               <textarea
                 id="salaisuus"
                 name="salaisuus"
+                placeholder="Salasana: h4uk10nk4l4"
                 rows={4}
                 className="w-full shadow-md px-2 py-1 rounded-lg border-gray-300 text-gray-600"
                 required
