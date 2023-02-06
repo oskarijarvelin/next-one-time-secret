@@ -35,7 +35,7 @@ export default function Home({ year }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="container-lg">
+      <main className="container-lg px-1">
         <div className="mx-auto w-full max-w-lg my-20 bg-white shadow-md rounded px-8 pt-8 pb-8 mb-4">
           <h1 className="text-3xl mb-6 font-bold">Lähetä salaisuus Oskarille</h1>
           <p>
