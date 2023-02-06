@@ -41,7 +41,7 @@ export default function Salaisuus({ data, year }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="container-lg px-1">
+      <main className="container-lg px-2">
         <div className="mx-auto w-full max-w-lg my-20 bg-white shadow-md rounded px-8 pt-8 pb-8 mb-4">
           {login &&
             <>
