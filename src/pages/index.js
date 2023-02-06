@@ -1,7 +1,8 @@
 import Head from "next/head";
+import Link from "next/link";
 import { useState } from "react";
 
-export default function Home() {
+export default function Home({ year }) {
   const [sent, setSent] = useState(false);
 
   const handleSubmitForm =
@@ -35,12 +36,13 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="container mx-auto w-full max-w-lg my-20 bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        <h1 className="text-3xl mb-8 font-bold">Lähetä salaisuus</h1>
+      <main className="container-lg">
+        <div className="mx-auto w-full max-w-lg my-20 bg-white shadow-md rounded px-8 pt-8 pb-8 mb-4">
+        <h1 className="text-3xl mb-6 font-bold">Lähetä salaisuus Oskarille</h1>
         <p>
-          Tässä lomakkeella voit lähettää tietoturvallisesti tunnuksia
-          Oskarille. Salaisuudet lähetetään salattuina, niiden lukeminen vaatii
-          kirjautumisen ja ne vanhentuvat.
+          Tässä lomakkeella voit lähettää minulle tietoturvallisesti mm. käyttäjätunnuksia, salasanoja ja muita luottamuksellisia tietoja.
+          Salasanasuojattu linkki tietojen lukemiseen lähetetään suoraan laitteilleni.
+          Tiedot ovat luettavissa vain yhden kerran 48 tunnin sisällä lähettämisestä.
         </p>
         {!sent &&
           <form className="mt-12" onSubmit={handleSubmitForm} /*action="/api/form" method="POST"*/ >
@@ -76,7 +78,18 @@ export default function Home() {
             </button>
           </div>
         }
+        </div>
+        <p className="text-center text-sm text-gray-600">
+          &copy;
+          {' '}{year}{' '}
+          <Link href="https://oskarijarvelin.fi">Oskari Järvelin</Link>
+        </p>
       </main>
     </>
   );
+}
+
+export async function getServerSideProps() {
+  const year = await new Date().getFullYear();
+  return { props: { year } }
 }
