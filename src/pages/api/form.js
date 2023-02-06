@@ -1,30 +1,17 @@
 import { encode as base64_encode } from "base-64";
 
-function send_email(key, recipient) {
-  fetch(`https://api.sendgrid.com/v3/mail/send`, {
+function send_push(key) {
+  fetch(`https://api.pushbullet.com/v2/pushes`, {
     method: "POST",
     headers: {
-      "Content-type": "application/json",
-      Authorization: `Bearer ${process.env.SENDGRID_API_KEY}`,
+      "Content-Type": "application/json",
+      "Access-Token": `${process.env.PUSHBULLET_TOKEN}`,
     },
     body: JSON.stringify({
-      "personalizations": [
-        {
-          "to": [
-            {
-              "email": `${recipient}`,
-            },
-          ],
-        },
-      ],
-      "from": { "email": "salaisuus@oskarijarvelin.fi" },
-      "subject": "Uusi salaisuus vastaanotettu",
-      "content": [
-        {
-          "type": "text/html",
-          "value": `<a href="https://salaisuus.oskarijarvelin.fi/lue/${key}" target="_blank">https://salaisuus.oskarijarvelin.fi/lue/${key}</a>`,
-        },
-      ],
+      "body": `Salaisuuden ID on ${key}`,
+      "title": "Uusi salaisuus vastaanotettu",
+      "url": `https://salaisuus.oskarijarvelin.fi/lue/${key}`,
+      "type": "link"
     }),
   });
 }
@@ -60,7 +47,7 @@ export default function handler(req, res) {
     .then((resp) => resp.json())
     .then((resp) => {
       if (resp?.custid === ots.username) {
-        send_email(resp.secret_key, ots.recipient);
+        send_push(resp.secret_key);
         res.status(201).json({ success: true });
       } else {
         res
