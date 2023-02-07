@@ -15,10 +15,10 @@ export default function Salaisuus({ data, year }) {
       password: e.target.password.value,
     }
 
-    if (process && process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === 'development') {
       api_url = `/api/login`;
     } else {
-      api_url = `${process.env.NEXT_PUBLIC_PROTOCOL}://${processprocess.env.VERCEL_URL}/api/login`
+      api_url = `${process.env.NEXT_PUBLIC_PROTOCOL}://${process.env.VERCEL_URL}/api/login`
     }
 
     const response = fetch(`${api_url}`, {

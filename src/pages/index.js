@@ -15,10 +15,10 @@ export default function Home({ year }) {
 
     setSent(true);
 
-    if (process && process.env.NODE_ENV === 'development') {
-      api_url = `/api/login`;
+    if (process.env.NODE_ENV === 'development') {
+      api_url = `/api/form`;
     } else {
-      api_url = `${process.env.NEXT_PUBLIC_PROTOCOL}://${processprocess.env.VERCEL_URL}/api/login`
+      api_url = `${process.env.NEXT_PUBLIC_PROTOCOL}://${processprocess.env.VERCEL_URL}/api/form`
     }
 
     const response = fetch(`${api_url}`, {
