@@ -18,7 +18,7 @@ export default function Salaisuus({ data, year }) {
     if (process.env.NODE_ENV === 'development') {
       api_url = `/api/login`;
     } else {
-      api_url = `${process.env.NEXT_PUBLIC_PROTOCOL}://${process.env.VERCEL_URL}/api/login`
+      api_url = `https://salaisuus.oskarijarvelin.fi/api/login`
     }
 
     const response = fetch(`${api_url}`, {

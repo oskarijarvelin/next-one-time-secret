@@ -18,7 +18,7 @@ export default function Home({ year }) {
     if (process.env.NODE_ENV === 'development') {
       api_url = `/api/form`;
     } else {
-      api_url = `${process.env.NEXT_PUBLIC_PROTOCOL}://${process.env.VERCEL_URL}/api/form`
+      api_url = `https://salaisuus.oskarijarvelin.fi/api/form`
     }
 
     const response = fetch(`${api_url}`, {
