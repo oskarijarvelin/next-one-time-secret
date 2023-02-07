@@ -4,6 +4,7 @@ import { useState } from "react";
 
 export default function Home({ year }) {
   const [sent, setSent] = useState(false);
+  var api_url = "";
 
   const handleSubmitForm = (e) => {
     e.preventDefault();
@@ -14,7 +15,13 @@ export default function Home({ year }) {
 
     setSent(true);
 
-    const response = fetch('/api/form', {
+    if (process && process.env.NODE_ENV === 'development') {
+      api_url = `/api/login`;
+    } else {
+      api_url = `${process.env.NEXT_PUBLIC_PROTOCOL}://${processprocess.env.VERCEL_URL}/api/login`
+    }
+
+    const response = fetch(`${api_url}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

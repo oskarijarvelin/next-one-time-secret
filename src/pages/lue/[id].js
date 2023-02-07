@@ -5,6 +5,7 @@ import { encode as base64_encode } from "base-64";
 
 export default function Salaisuus({ data, year }) {
   const [login, setLogin] = useState(false);
+  var api_url = "";
 
   const handleLoginForm = (e) => {
     e.preventDefault();
@@ -14,7 +15,13 @@ export default function Salaisuus({ data, year }) {
       password: e.target.password.value,
     }
 
-    const response = fetch('/api/login', {
+    if (process && process.env.NODE_ENV === 'development') {
+      api_url = `/api/login`;
+    } else {
+      api_url = `${process.env.NEXT_PUBLIC_PROTOCOL}://${processprocess.env.VERCEL_URL}/api/login`
+    }
+
+    const response = fetch(`${api_url}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
